@@ -2,7 +2,7 @@
 
 ### Funções iniciais e ideias de como montá-las
 #### `bool inicializar()`
-A princípio a função de inicialização iria criar uma nova lista de dominós, ou seja, um novo conjunto com __28 peças__.
+A princípio a função de inicialização iria criar uma nova lista de dominós, ou seja, um novo conjunto com <font color=\"yellow\">__28 peças__</font>.
 
 Sabemos que cada peça possui dois números, um na parte superior e outro na parte inferior, está função deve ser capaz de __criar todas as 28 possibilidades__, ou __manejar com as 28 peças já descritas em código__, como se fosse uma biblioteca.
 a lista precisa ser ordenada de forma a gente já saber qual jogador possui a maior peça pra iniciar o jogo.
