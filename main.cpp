@@ -1,5 +1,5 @@
 #include <iostream>
-//#include "ListaVetorial2.cpp"
+#include "ListaVetorial.cpp"
 #include "LUE.hpp"
 
 struct Peca{
@@ -13,21 +13,29 @@ struct Jogador{
 
 void IniciaListaDePeca(LUE<Peca> & l){
 
+
 }
+//vai precisar de uma adaptação pra utilizar os simbolos de >, < e = que estão na biblioteca LUE.hpp 
 
 
 int main(){
-    LUE<int> pecas;
-    //LUE<Jogador> jogadores;
+    Lista<int> pecas;
+    //LUE<int> jogador;
 
-    pecas.instanciar();
+    pecas.inicializar();
 
-    pecas.inserir(8);
-    pecas.inserir(3);
-    pecas.inserir(1);
-    pecas.inserir(7);
+    pecas.inserirInicio(4);
+    pecas.inserirFinal(3);
+    pecas.inserirFinal(21);
+    pecas.inserirPosicao(17, 2);
 
-    pecas.descobrirIndice(10);
+    
+    pecas.imprimir();
+    std:: cout << " ";
+
+    std:: cout << "aqui:" << pecas.descobrirIndice(56) << " ";
+
+    //pecas.descobrirIndice(21);
 
     pecas.imprimir();
 

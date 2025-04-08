@@ -4,6 +4,8 @@ struct No{
     No *elo; // nó seguinte a ele
 }; 
 
+//refazer inserir e refazer remover, precisa dos tres 
+
 template<typename T>
 struct LUE{
     No<T> *comeco;
@@ -132,7 +134,6 @@ struct LUE{
         while(aux1 != NULL){
             //regrede uma no main
             if(i == posicao){
-                std:: cout << aux1->dado;
                 return aux1->dado;
             }
             else{
