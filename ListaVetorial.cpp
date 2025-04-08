@@ -12,120 +12,161 @@ struct Lista{
     int aux;
     int inicio;
 
-    void inicializar(){
-        inicio = 0;
-        ultimo = -1;
-        aux = 0;
-    }
+    void inicializar();
 
-    bool inserirInicio(T valor){
-        if( ultimo == MAX_TAM-1) return false;
-        
-        if(ultimo == -1){
-            vetor[0] = valor;
-            ultimo++;
-            return true;
-        }
-        else{
-            int i = ultimo;
-            while( i >= inicio ){
-                vetor[i+1] = vetor[i];
-                i--;
-            }
-            ultimo++;
-            vetor[0] = valor;
-            return true;
-        }
-        return false;
-    }
+    bool inserirInicio(T valor);
 
-    bool inserirPosicao(T valor, int posicao){
-        if(ultimo == MAX_TAM-1 || posicao < 0 || posicao > ultimo+1) return false;
+    bool inserirPosicao(T valor, int posicao);
 
-        if(posicao == inicio){
-            inserirInicio(valor);
-            return true;
-        }
-        else{
-            int i = posicao;
-            while( i <= ultimo ){
-                vetor[i+1] = vetor[i];
-                i++;
-            }
-            ultimo++;
-            vetor[posicao] = valor;
-        }
-        return true;
-    }
+    bool inserirFinal(T valor);
 
-    bool inserirFinal(T valor){
-        if( ultimo == MAX_TAM-1) return false;
+    bool removerPosicao(int posicao);
 
-        vetor[ultimo+1] = valor;
+    bool removerInicio();
+    
+    bool removerFinal();
+
+    T obterItem(int posicao);
+
+    bool contemItem(T valor);
+
+    int descobrirIndice(T valor);
+
+    void imprimir();
+};
+
+//implementação
+
+template <typename T>
+void Lista<T>:: inicializar(){
+    inicio = 0;
+    ultimo = -1;
+    aux = 0;
+}
+
+template <typename T>
+bool Lista<T>:: inserirInicio(T valor){
+    if( ultimo == MAX_TAM-1) return false;
+    
+    if(ultimo == -1){
+        vetor[0] = valor;
         ultimo++;
         return true;
-
     }
-
-    bool removerPosicao(int posicao){
-
-        if(posicao < 0 || posicao > ultimo) return false;
-
-        for( int i = posicao; i < ultimo; i++ ){
-            vetor[i] = vetor[i+1];
+    else{
+        int i = ultimo;
+        while( i >= inicio ){
+            vetor[i+1] = vetor[i];
+            i--;
         }
-        ultimo--;
-        return true;  
-    }
-
-    bool removerInicio(){
-        //lista vazia
-        if(ultimo == -1) return false;
-
-        for( int i = inicio; i < ultimo; i++ ){
-            vetor[i] = vetor[i+1];
-        }
-        ultimo--;
-        return true;
-    } 
-    
-    bool removerFinal(){
-        //lista vazia
-        if(ultimo == -1) return false;
-
-        ultimo--;
+        ultimo++;
+        vetor[0] = valor;
         return true;
     }
+    return false;
+}
 
-    T obterItem(int posicao){
-        if(posicao < 0 || posicao > ultimo) return false;
+template <typename T>
+bool Lista<T>:: inserirPosicao(T valor, int posicao){
+    if(ultimo == MAX_TAM-1 || posicao < 0 || posicao > ultimo+1) return false;
 
-        return vetor[posicao];
+    if(posicao == inicio){
+        inserirInicio(valor);
+        return true;
     }
-
-    bool contemItem(T valor){
-        int i = inicio;
-            while( i <= ultimo ){
-                if(vetor[i] == valor) return true;
-                i++;
-            }
-            return false;
-    }
-
-    int descobrirIndice(T valor){
-        int i = inicio;
-            while( i <= ultimo ){
-                if(vetor[i] == valor) return i;
-                i++;
-            }
-            return -1;
-    }
-
-    void imprimir(){
-        for(int i = 0; i <= ultimo; i++ ){
-            std:: cout << vetor[i] << " ";
+    else{
+        int i = posicao;
+        while( i <= ultimo ){
+            vetor[i+1] = vetor[i];
+            i++;
         }
+        ultimo++;
+        vetor[posicao] = valor;
     }
+    return true;
+}
+
+template <typename T>
+bool Lista<T>:: inserirFinal(T valor){
+    if( ultimo == MAX_TAM-1) return false;
+
+    vetor[ultimo+1] = valor;
+    ultimo++;
+    return true;
+
+}
+
+template <typename T>
+bool Lista<T>:: removerPosicao(int posicao){
+
+    if(posicao < 0 || posicao > ultimo) return false;
+
+    for( int i = posicao; i < ultimo; i++ ){
+        vetor[i] = vetor[i+1];
+    }
+    ultimo--;
+    return true;  
+}
+
+template <typename T>
+bool Lista<T>:: removerInicio(){
+    //lista vazia
+    if(ultimo == -1) return false;
+
+    for( int i = inicio; i < ultimo; i++ ){
+        vetor[i] = vetor[i+1];
+    }
+    ultimo--;
+    return true;
+} 
+
+template <typename T>
+bool Lista<T>:: removerFinal(){
+    //lista vazia
+    if(ultimo == -1) return false;
+
+    ultimo--;
+    return true;
+}
+
+template <typename T>
+T Lista<T>:: obterItem(int posicao){
+    if(posicao < 0 || posicao > ultimo) return false;
+
+    return vetor[posicao];
+}
+
+template <typename T>
+bool Lista<T>:: contemItem(T valor){
+    int i = inicio;
+        while( i <= ultimo ){
+            if(vetor[i] == valor) return true;
+            i++;
+        }
+        return false;
+}
+
+template <typename T>
+int Lista<T>:: descobrirIndice(T valor){
+    int i = inicio;
+        while( i <= ultimo ){
+            if(vetor[i] == valor) return i;
+            i++;
+        }
+        return -1;
+}
+
+template <typename T>
+void Lista<T>:: imprimir(){
+    for(int i = 0; i <= ultimo; i++ ){
+        std:: cout << vetor[i] << " ";
+    }
+}
 
 
-};
+
+
+
+
+
+

@@ -19,24 +19,20 @@ void IniciaListaDePeca(LUE<Peca> & l){
 
 
 int main(){
-    Lista<int> pecas;
+    LUE<int> pecas;
     //LUE<int> jogador;
 
-    pecas.inicializar();
+    pecas.instanciar();
 
     pecas.inserirInicio(4);
-    pecas.inserirFinal(3);
-    pecas.inserirFinal(21);
-    pecas.inserirPosicao(17, 2);
+    pecas.inserirInicio(3);
+    //pecas.inserirUltimo(3);
+    pecas.inserirPosicao(5, 1);
+    pecas.inserirUltimo(9);
+    pecas.inserirPosicao(20, 0);
+
 
     
-    pecas.imprimir();
-    std:: cout << " ";
-
-    std:: cout << "aqui:" << pecas.descobrirIndice(56) << " ";
-
-    //pecas.descobrirIndice(21);
-
     pecas.imprimir();
 
 

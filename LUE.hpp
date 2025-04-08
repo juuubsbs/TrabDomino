@@ -18,7 +18,78 @@ struct LUE{
     void instanciar(){
         comeco = nullptr;
         fim = nullptr;
-        contador = 0;
+        contador = -1;
+    }
+
+    void inserirInicio(T valor){
+
+        No<T> *novoNo = new No<T>;
+        novoNo->dado = valor;
+        novoNo->elo = nullptr;
+
+        if(comeco == nullptr){
+            comeco = novoNo;
+            fim = novoNo;
+            return;
+        }
+        novoNo->elo = comeco;//atualiza o endereço
+        comeco = novoNo;//repassa os dados
+
+
+        contador++;
+    }
+
+    bool inserirPosicao(T valor, int posicao){
+        if(posicao < 0 || posicao > contador + 1) return false;
+        No<T> *novoNo = new No<T>;
+        novoNo->dado = valor;
+        novoNo->elo = nullptr;
+
+        
+        if(posicao == 0){
+            inserirInicio(valor);
+            return true;
+        }
+
+        if(posicao == contador){
+            inserirUltimo(valor);
+            return true;
+        }
+
+        ant = comeco; 
+        prox = ant->elo;
+        int i = 0;
+        while(i <= posicao){
+            if(i == posicao-1){
+                ant->elo = novoNo;
+                novoNo->elo = prox;
+                break;
+            }
+            i++;
+            ant = prox; 
+            prox = ant->elo;
+        }
+        contador++;
+        return true;
+    }
+
+    void inserirUltimo(T valor){
+
+        No<T> *novoNo = new No<T>;
+        novoNo->dado = valor;
+        novoNo->elo = nullptr;
+
+        if(comeco == nullptr){
+            comeco = novoNo;
+            fim = novoNo;
+            return;
+        }
+
+        fim->elo = novoNo; 
+        fim = novoNo;
+        
+        contador++;
+
     }
 
     void inserir(T valor){
