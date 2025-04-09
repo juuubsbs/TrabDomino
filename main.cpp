@@ -24,17 +24,11 @@ int main(){
 
     pecas.instanciar();
 
-    pecas.inserirInicio(4);
-    pecas.inserirInicio(3);
-    //pecas.inserirUltimo(3);
-    pecas.inserirPosicao(5, 1);
-    pecas.inserirUltimo(9);
-    pecas.inserirPosicao(20, 0);
-
-
-    
+    pecas.inserirUltimo(3);
+    pecas.inserirUltimo(6); 
     pecas.imprimir();
-
+    pecas.removerPosicao(0);
+    pecas.imprimir();
 
 
     return 0;
