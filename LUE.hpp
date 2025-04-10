@@ -2,9 +2,11 @@ template<typename T>
 struct No{
     T dado;
     No *elo; // nó seguinte a ele
-}; 
 
-//refazer inserir e refazer remover, precisa dos tres 
+    //construtor de No
+    No() : dado(), elo(nullptr) {}
+    No(T &valor) : dado(valor), elo(nullptr) {}
+}; 
 
 template<typename T>
 struct LUE{
@@ -47,8 +49,7 @@ void LUE<T>:: instanciar(){
 
 template <typename T>
 void LUE<T>:: inserirInicio(T valor){
-    No<T> *novoNo = new No<T>;
-    novoNo->dado = valor;
+    No<T> *novoNo = new No<T>(valor);
     novoNo->elo = nullptr;
 
     if(comeco == nullptr){
@@ -66,8 +67,7 @@ void LUE<T>:: inserirInicio(T valor){
 template <typename T>
 bool LUE<T>:: inserirPosicao(T valor, int posicao){
     if(posicao < 0 || posicao > contador + 1) return false;
-    No<T> *novoNo = new No<T>;
-    novoNo->dado = valor;
+    No<T> *novoNo = new No<T>(valor);
     novoNo->elo = nullptr;
     
     if(posicao == 0){
@@ -99,8 +99,7 @@ bool LUE<T>:: inserirPosicao(T valor, int posicao){
 
 template <typename T>
 void LUE<T>:: inserirUltimo(T valor){
-    No<T> *novoNo = new No<T>;
-    novoNo->dado = valor;
+    No<T> *novoNo = new No<T>(valor);
     novoNo->elo = nullptr;
 
     if(comeco == nullptr){
@@ -132,9 +131,9 @@ template <typename T>
 bool LUE<T>:: removerInicio(){
     No<T> *aux1 = new No<T>;
 
+    aux1 = comeco;
     if(comeco == NULL) return false;
 
-    aux1 = comeco;
     if(aux1 == fim){
         comeco = NULL;
         fim = NULL;
@@ -153,7 +152,9 @@ bool LUE<T>:: removerInicio(){
 
 template <typename T>
 bool LUE<T>:: removerPosicao(int posicao){
-    No<T> *aux1 = new No<T>;
+    No<T> *aux1 = comeco;
+    No<T>* ant = nullptr;
+    int i = 0;
 
     if(posicao < 0 || posicao > contador) return false;
 
@@ -166,32 +167,27 @@ bool LUE<T>:: removerPosicao(int posicao){
         return true;
     }
 
-    int i = 0;
-    ant = aux1;
-    aux1 = aux1->elo;
-    prox = prox->elo;
-    while(aux1->elo != NULL){
-        if(posicao == i){
-            std:: cout << "entrou aqui";
-            ant->elo = prox;
-            delete aux1;
-            contador--;
+    do {
+        if (i == posicao) {
+            ant->elo = aux1->elo; 
+            delete aux1;          
+            contador--;           
             return true;
         }
-        ant = aux1;
+        ant = aux1;              
         aux1 = aux1->elo;
-        prox = prox->elo;
-    }
+        i++;
+    } while (aux1 != NULL);
+
     return false;
 }
 
 template <typename T>
 bool LUE<T>:: removerFinal(){
-    No<T> *aux1 = new No<T>;
+    No<T> *aux1 = comeco;
 
     if(fim == NULL) return false;
 
-    aux1 = comeco;
     if(comeco == fim){
         comeco = NULL;
         fim = NULL;
@@ -204,25 +200,21 @@ bool LUE<T>:: removerFinal(){
     while(aux1->elo != NULL){
         ant = aux1;
         aux1 = aux1->elo;
-        prox = prox->elo;
-
-        if(aux1 == fim){
-            fim = ant;
-            fim->elo = NULL;
-            contador--;
-
-            delete aux1;
-            return true;
-        }
-        return true;
     }
-    return false;
+
+    fim = ant;
+    fim->elo = NULL;
+    contador--;
+
+    delete aux1;
+    return true;
 }
 
 template <typename T>
 bool LUE<T>:: contemItem(T valor){
-    No<T> *aux1 = comeco;
+    No<T> *aux1 = new No<T>;
 
+    aux = comeco;
     while(aux1 != NULL){
         if(aux1->dado == valor){
             return true;
@@ -249,7 +241,7 @@ T LUE<T>:: obterItem(int posicao){
             i++;
         }
     } 
-    return (T)NULL;
+    throw std::out_of_range("NULL");
 }
 
 template <typename T>
@@ -259,8 +251,6 @@ int LUE<T>:: descobrirIndice(T valor){
 
     while( aux1 != NULL){
         if(aux1->dado == valor){
-            std:: cout << "o i:" << i;
-            std:: cout << "o valor:" << aux1->dado;
             return i;
         }
         else{

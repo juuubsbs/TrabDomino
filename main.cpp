@@ -5,7 +5,28 @@
 struct Peca{
     int cima;
     int baixo;
+
+    //default
+    Peca() : cima(0), baixo(0) {}
+
+    Peca(int c, int b) : cima(c), baixo(b) {}
 };
+
+//aqui é pra definição de como os operadores irão lidar com Pecas
+std:: ostream &operator<<(std:: ostream &os, Peca &valor){
+    os << "[" << valor.cima << "|" << valor.baixo << "]";
+    return os;
+}
+bool operator==(Peca &peca1, Peca &peca2){
+    return (peca1.cima == peca2.cima && peca1.baixo == peca2.baixo);
+}
+
+//estes são por desencargo de consciencia, mas a principio não vao ser usados
+bool operator!=(Peca &peca1, Peca &peca2){
+    return !(peca1 == peca2);
+}
+
+
 
 struct Jogador{
 
@@ -19,15 +40,26 @@ void IniciaListaDePeca(LUE<Peca> & l){
 
 
 int main(){
-    LUE<int> pecas;
+    LUE<Peca> pecas;
     //LUE<int> jogador;
+    Peca oi(2,3);
+
+    
 
     pecas.instanciar();
 
-    pecas.inserirUltimo(3);
-    pecas.inserirUltimo(6); 
+    pecas.inserirInicio(oi);
+
+    oi.baixo = 9;
+    oi.cima = 1;
+    pecas.inserirInicio(oi);
+
+    oi.baixo = 5;
+    oi.cima = 12;
+    pecas.inserirPosicao(oi, 1);
+
     pecas.imprimir();
-    pecas.removerPosicao(0);
+    pecas.obterItem(1);
     pecas.imprimir();
 
 
