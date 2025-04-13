@@ -60,17 +60,24 @@ void distribuirPecas(LUE<Peca>& monte, Lista<Peca>& maoJogador, int numPecas) {
 }
 
 void imprimirMao(const Lista<Peca>& mao, int jogador) {
-    std::cout << "Jogador " << jogador << " Mao: ";
+    //cores
+    std:: string codigo;
+    if((jogador / 2) != 0){
+        codigo = "\e[0;36m";//azul ciano
+    }
+    else codigo = "\e[0;33m";//amarelo
+
+    std::cout << codigo << "Jogador " << jogador << " Mao: ";
     for (int i = 0; i <= mao.ultimo; ++i) {
         std::cout << "(" << i << ")" << mao.obterItem(i) << " ";
     }
-    std::cout << std::endl;
+    std::cout << "\e[0m" << std::endl;
 }
 
 void imprimirMesa(const LUE<Peca>& mesa) {
     std::cout << "Mesa: ";
     if (mesa.tamanho == 0) {
-        std::cout << "(vazia)";
+        std::cout << "\e[0;31m(vazia)\e[0m";
     } else {
         mesa.imprimir(); // LUE.imprimir (já tem \n no final)
     }
@@ -124,24 +131,28 @@ int main() {
     Lista<Peca> maoJogador1;
     Lista<Peca> maoJogador2;
     LUE<Peca> mesa;
+    int numPecas;
+    int rodada;
 
     // 1. Inicializar
     monte.instanciar();
     maoJogador1.inicializar();
     maoJogador2.inicializar();
     mesa.instanciar();
+    numPecas = 7;
+    rodada = 0;
 
     // 2. Criar monte
     monte = criarMonte();
 
     // 3. Distribuir peças
-    distribuirPecas(monte, maoJogador1, 7);
-    distribuirPecas(monte, maoJogador2, 7);
+    distribuirPecas(monte, maoJogador1, numPecas);
+    distribuirPecas(monte, maoJogador2, numPecas);
 
-    std::cout << "--- Distribuicao Inicial ---" << std::endl;
+    std::cout << "\e[0;35m--- Distribuicao Inicial ---\e[0m" << std::endl;
     imprimirMao(maoJogador1, 1);
     imprimirMao(maoJogador2, 2);
-    std::cout << "----------------------------" << std::endl;
+    std::cout << "\e[0;35m----------------------------\e[0m" << std::endl;
 
     int jogadorAtual = 1;
     bool alguemGanhou = false;
@@ -158,16 +169,19 @@ int main() {
         mesa.inserirInicio(seisSeis); // Passa Peca por valor
         jogadorAtual = 2;
         primeiroMovimentoFeito = true;
+        rodada++;
     } else if (indiceSeisSeis2 != -1) {
         std::cout << "Jogador 2 tem [6|6] e comeca." << std::endl;
         maoJogador2.removerPosicao(indiceSeisSeis2);
         mesa.inserirInicio(seisSeis); // Passa Peca por valor
         jogadorAtual = 1;
         primeiroMovimentoFeito = true;
+        rodada++;
     } else {
         std::cout << "Ninguem tem [6|6]. Jogador 1 comeca." << std::endl;
         jogadorAtual = 1;
         primeiroMovimentoFeito = false;
+        rodada++;
     }
 
     if (primeiroMovimentoFeito) {
@@ -184,7 +198,15 @@ int main() {
     while (!alguemGanhou) {
         Lista<Peca>& maoAtual = (jogadorAtual == 1) ? maoJogador1 : maoJogador2;
 
-        std::cout << "\n=== Vez do Jogador " << jogadorAtual << " ===" << std::endl;
+        //cores
+        std:: cout << "\n\e[0;35mRodada " << rodada << "\e[0m";
+        std:: string codigo;
+        if((jogadorAtual / 2) != 0){
+            codigo = "\e[0;36m";//azul ciano
+        }
+        else codigo = "\e[0;33m";//amarelo
+
+        std::cout << codigo << "\n=== Vez do Jogador " << jogadorAtual << " ===\e[0m" << std::endl;
         imprimirMesa(mesa);
         imprimirMao(maoAtual, jogadorAtual);
 
@@ -236,15 +258,19 @@ int main() {
         // 8. Verificar vitória
         if (!alguemGanhou && maoAtual.tamanho == 0) {
             alguemGanhou = true;
-            std::cout << "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-            std::cout << "Jogador " << jogadorAtual << " VENCEU!" << std::endl;
-            std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+            std::cout << "\n\e[0;32m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+            std::cout << "         Jogador " << jogadorAtual << " VENCEU!" << std::endl;
+            std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\e[0m" << std::endl;
             imprimirMesa(mesa);
             imprimirMao(maoJogador1, 1);
             imprimirMao(maoJogador2, 2);
         } else if (!alguemGanhou) {
             // 9. Passar a vez
             jogadorAtual = (jogadorAtual == 1) ? 2 : 1;
+            std:: cout << "Pressione qualquer tecla para continuar...";
+            std:: cin.get();
+            std::cout << std::string(50, '\n');//printa muitos \n
+            rodada++;
         }
     } // Fim do while
 
