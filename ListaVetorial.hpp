@@ -11,6 +11,7 @@ struct Lista{
     int ultimo;
     int aux;
     int inicio;
+    int tamanho;
 
     void inicializar();
 
@@ -26,13 +27,15 @@ struct Lista{
     
     bool removerFinal();
 
-    T obterItem(int posicao);
+    T obterItem(int posicao) const;
 
-    bool contemItem(T valor);
+    bool contemItem(T valor) const;
 
-    int descobrirIndice(T valor);
+    int descobrirIndice(T valor) const;
 
-    void imprimir();
+    void imprimir() const;
+
+    bool removerItem(const T& valor);
 };
 
 //implementação
@@ -42,6 +45,7 @@ void Lista<T>:: inicializar(){
     inicio = 0;
     ultimo = -1;
     aux = 0;
+    tamanho = 0;
 }
 
 template <typename T>
@@ -51,6 +55,7 @@ bool Lista<T>:: inserirInicio(T valor){
     if(ultimo == -1){
         vetor[0] = valor;
         ultimo++;
+        tamanho++;
         return true;
     }
     else{
@@ -60,6 +65,7 @@ bool Lista<T>:: inserirInicio(T valor){
             i--;
         }
         ultimo++;
+        tamanho++;
         vetor[0] = valor;
         return true;
     }
@@ -81,6 +87,7 @@ bool Lista<T>:: inserirPosicao(T valor, int posicao){
             i++;
         }
         ultimo++;
+        tamanho++;
         vetor[posicao] = valor;
     }
     return true;
@@ -92,6 +99,7 @@ bool Lista<T>:: inserirFinal(T valor){
 
     vetor[ultimo+1] = valor;
     ultimo++;
+    tamanho++;
     return true;
 
 }
@@ -105,6 +113,7 @@ bool Lista<T>:: removerPosicao(int posicao){
         vetor[i] = vetor[i+1];
     }
     ultimo--;
+    tamanho--;
     return true;  
 }
 
@@ -117,6 +126,7 @@ bool Lista<T>:: removerInicio(){
         vetor[i] = vetor[i+1];
     }
     ultimo--;
+    tamanho--;
     return true;
 } 
 
@@ -126,18 +136,21 @@ bool Lista<T>:: removerFinal(){
     if(ultimo == -1) return false;
 
     ultimo--;
+    tamanho--;
     return true;
 }
 
 template <typename T>
-T Lista<T>:: obterItem(int posicao){
-    if(posicao < 0 || posicao > ultimo) return false;
-
-    return vetor[posicao];
+T Lista<T>:: obterItem(int posicao) const{
+    if(posicao >= 0 && posicao <= ultimo) {
+        return vetor[posicao];
+    } else {
+        return T();
+    }
 }
 
 template <typename T>
-bool Lista<T>:: contemItem(T valor){
+bool Lista<T>:: contemItem(T valor) const{
     int i = inicio;
         while( i <= ultimo ){
             if(vetor[i] == valor) return true;
@@ -147,7 +160,7 @@ bool Lista<T>:: contemItem(T valor){
 }
 
 template <typename T>
-int Lista<T>:: descobrirIndice(T valor){
+int Lista<T>:: descobrirIndice(T valor) const{
     int i = inicio;
         while( i <= ultimo ){
             if(vetor[i] == valor) return i;
@@ -157,16 +170,16 @@ int Lista<T>:: descobrirIndice(T valor){
 }
 
 template <typename T>
-void Lista<T>:: imprimir(){
+void Lista<T>:: imprimir() const{
     for(int i = 0; i <= ultimo; i++ ){
         std:: cout << vetor[i] << " ";
     }
 }
 
-
-
-
-
-
-
-
+template <typename T>
+bool Lista<T>:: removerItem(const T& valor){
+    int index = descobrirIndice(valor);
+    if (index != -1) {
+       return removerPosicao(index);
+    }
+}

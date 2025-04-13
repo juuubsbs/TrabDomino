@@ -16,6 +16,8 @@ struct LUE{
     No<T> *prox;   //posição a ser escolhida
     No<T> *aux;    //posição a ser escolhida
     int contador;
+    int tamanho;
+
 
     void instanciar();
 
@@ -25,7 +27,7 @@ struct LUE{
 
     void inserirUltimo(T valor);
 
-    void imprimir();
+    void imprimir()const;
 
     bool removerInicio();
 
@@ -35,7 +37,7 @@ struct LUE{
     
     bool contemItem(T valor);
 
-    T obterItem(int posicao);
+    T obterItem(int posicao)const;
 
     int descobrirIndice(T valor);
 };
@@ -45,6 +47,7 @@ void LUE<T>:: instanciar(){
     comeco = nullptr;
     fim = nullptr;
     contador = -1;
+    tamanho = 0;
 }
 
 template <typename T>
@@ -56,13 +59,19 @@ void LUE<T>:: inserirInicio(T valor){
         comeco = novoNo;
         fim = novoNo;
         contador++;
+        tamanho++;
         return;
     }
     novoNo->elo = comeco;//atualiza o endereço
     comeco = novoNo;//repassa os dados
 
     contador++;
+    tamanho++;
 }
+
+
+
+
 
 template <typename T>
 bool LUE<T>:: inserirPosicao(T valor, int posicao){
@@ -94,8 +103,10 @@ bool LUE<T>:: inserirPosicao(T valor, int posicao){
         prox = ant->elo;
     }
     contador++;
+    tamanho++;
     return true;
 }
+
 
 template <typename T>
 void LUE<T>:: inserirUltimo(T valor){
@@ -106,6 +117,7 @@ void LUE<T>:: inserirUltimo(T valor){
         comeco = novoNo;
         fim = novoNo;
         contador++;
+        tamanho++;
         return;
     }
 
@@ -113,10 +125,11 @@ void LUE<T>:: inserirUltimo(T valor){
     fim = novoNo;
     
     contador++;
+    tamanho++;
 }
-
+/*
 template <typename T>
-void LUE<T>:: imprimir(){
+void LUE<T>:: imprimir()const{
     if(comeco == NULL) return;
 
     this->aux = this->comeco;
@@ -126,6 +139,20 @@ void LUE<T>:: imprimir(){
         this->aux = this->aux->elo;
     }
 }
+    */
+
+
+    template <typename T>
+    void LUE<T>::imprimir() const {
+        // Usa ponteiro local para não modificar o membro aux da struct durante a impressão
+        No<T>* aux1 = comeco;
+        while (aux1 != nullptr) {
+            std::cout << aux1->dado << " ";
+            aux1 = aux1->elo;
+        }
+        std::cout << "\n"; // Mantém o \n que estava na implementação original
+    }
+
 
 template <typename T>
 bool LUE<T>:: removerInicio(){
@@ -138,6 +165,7 @@ bool LUE<T>:: removerInicio(){
         comeco = NULL;
         fim = NULL;
         contador--;
+        tamanho--;
 
         delete aux1;
         return true;  
@@ -145,6 +173,7 @@ bool LUE<T>:: removerInicio(){
 
     comeco = aux1->elo;
     contador--;
+    tamanho--;
     delete aux1;
 
     return true;
@@ -171,7 +200,8 @@ bool LUE<T>:: removerPosicao(int posicao){
         if (i == posicao) {
             ant->elo = aux1->elo; 
             delete aux1;          
-            contador--;           
+            contador--;
+            tamanho--;           
             return true;
         }
         ant = aux1;              
@@ -192,6 +222,7 @@ bool LUE<T>:: removerFinal(){
         comeco = NULL;
         fim = NULL;
         contador--;
+        tamanho--;
 
         delete aux1;
         return true;
@@ -205,6 +236,7 @@ bool LUE<T>:: removerFinal(){
     fim = ant;
     fim->elo = NULL;
     contador--;
+    tamanho--;
 
     delete aux1;
     return true;
@@ -227,7 +259,7 @@ bool LUE<T>:: contemItem(T valor){
 }
 
 template <typename T>
-T LUE<T>:: obterItem(int posicao){
+T LUE<T>:: obterItem(int posicao)const{
     No<T> *aux1 = comeco;
     int i = 0;
 
